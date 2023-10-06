@@ -56,19 +56,19 @@ img_size = config.IMG_SIZE
 print("Loading images from directory : ", args.dir)
 
 path = args.dir
-test = pd.read_csv(os.path.join(args.dir,'test.csv'))
+test = pd.read_csv(os.path.join(args.dir,'test_mo.csv'))
 test_ids = test['ImageId'].drop_duplicates().values
 test_ids = test_ids[:args.num_of_images]
 
-ENCODER = 'efficientnet-b4'
+ENCODER = 'efficientnet-b7'
 ENCODER_WEIGHTS = 'imagenet'
 
 preprocessing_fn = smp.encoders.get_preprocessing_fn(ENCODER, ENCODER_WEIGHTS)
 
-test_dataset = utils.S_Dataset(df=test, datatype='test', folder=args.dir, img_ids=test_ids, transforms=utils.get_augmentation('valid'), preprocessing=utils.get_preprocessing(preprocessing_fn))
+test_dataset = utils.S_Dataset(df=test, datatype='test_mo', folder=args.dir, img_ids=test_ids, transforms=utils.get_augmentation('valid'), preprocessing=utils.get_preprocessing(preprocessing_fn))
 test_loader = DataLoader(test_dataset, batch_size=1, shuffle=False, num_workers=0)
     
-ENCODER = 'efficientnet-b4'
+ENCODER = 'efficientnet-b7'
 ENCODER_WEIGHTS = 'imagenet'
 
 ACTIVATION = 'sigmoid'
@@ -79,7 +79,7 @@ model = smp.Unet(
     activation=ACTIVATION,
 )
 
-state_dict = torch.load(os.path.join(args.weights_dir, 'UnetEfficientNetB4_IoU_059.pth'), map_location=torch.device('cpu'))
+state_dict = torch.load(os.path.join(args.weights_dir, 'best_full.pth'), map_location=torch.device('cpu'))
 model.load_state_dict(state_dict["model_state_dict"])
 model.eval()
 
@@ -93,7 +93,7 @@ for data_batch, _ in test_loader:
 
 for i in range(args.num_of_images):    
     image_name = test_ids[i]
-    image = utils.get_img(image_name, folder=os.path.join(args.dir,'test_images'))
+    image = utils.get_img(image_name, folder=os.path.join(args.dir,'test_mo'))
     predicted_mask = predicted_masks[i][0][0]
     utils.save_test(image, predicted_mask, image_name, args.dir)
 

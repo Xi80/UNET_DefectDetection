@@ -48,9 +48,9 @@ import segmentation_models_pytorch as smp
 parser = argparse.ArgumentParser(description='Training stage')
 parser.add_argument('-dir', type=str, default=None,
                     help='Pass a directory to the train images', required=True)
-parser.add_argument('-encoder', type=str, default='efficientnet-b3',
+parser.add_argument('-encoder', type=str, default='efficientnet-b7',
                     help='Backbone to use as encoder for UNet', required=False)
-parser.add_argument('-batch_size', type=int, default=8,
+parser.add_argument('-batch_size', type=int, default=16,
                     help='Batch size for training', required=False)
 parser.add_argument('-num_workers', type=int, default=0,
                     help='Number of workers for training', required=False)
@@ -104,7 +104,7 @@ optimizer = torch.optim.Adam([
 ])
 
 scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
-    optimizer, factor=0.15, patience=2
+    optimizer, factor=0.1, patience=6
     )
 
 criterion = losses.DiceBCELoss()
