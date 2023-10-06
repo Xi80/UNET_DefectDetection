@@ -45,7 +45,7 @@ import segmentation_models_pytorch as smp
 parser = argparse.ArgumentParser(description='Evaluate model')
 parser.add_argument('-dir', type=str, default=None,
                     help='Pass a directory to evaluate the images in it', required=True)
-parser.add_argument('-num_of_images', type=int, default=1,
+parser.add_argument('-num_of_images', type=int, default=15,
                     help='Number of test image test.csv for segmentation', required=False)
 parser.add_argument('-weights_dir', type=str, default=None,
                     help='Pass a weights directory', required=True)
@@ -65,7 +65,7 @@ ENCODER_WEIGHTS = 'imagenet'
 
 preprocessing_fn = smp.encoders.get_preprocessing_fn(ENCODER, ENCODER_WEIGHTS)
 
-test_dataset = utils.S_Dataset(df=test, datatype='test_mo', folder=args.dir, img_ids=test_ids, transforms=utils.get_augmentation('valid'), preprocessing=utils.get_preprocessing(preprocessing_fn))
+test_dataset = utils.S_Dataset(df=test, datatype='test', folder=args.dir, img_ids=test_ids, transforms=utils.get_augmentation('valid'), preprocessing=utils.get_preprocessing(preprocessing_fn))
 test_loader = DataLoader(test_dataset, batch_size=1, shuffle=False, num_workers=0)
     
 ENCODER = 'efficientnet-b7'
@@ -93,7 +93,7 @@ for data_batch, _ in test_loader:
 
 for i in range(args.num_of_images):    
     image_name = test_ids[i]
-    image = utils.get_img(image_name, folder=os.path.join(args.dir,'test_mo'))
+    image = utils.get_img(image_name, folder=os.path.join(args.dir,'test_images'))
     predicted_mask = predicted_masks[i][0][0]
     utils.save_test(image, predicted_mask, image_name, args.dir)
 
