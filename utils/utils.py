@@ -61,7 +61,15 @@ def save_test(image, mask, img_name, folder):
     ax[0].title.set_text('MO Image')
     ax[1].title.set_text('Defects(Inference)')
     f.savefig(os.path.join(folder, 'results', img_name + '.png'), bbox_inches="tight", pad_inches=0)
-    
+
+def save_test_overlay(image, mask, img_name, folder):
+    plt.clf()
+    fontsize = 14   
+    plt.imshow(cv2.resize(image, (config.IMG_SIZE[1], config.IMG_SIZE[0])),zorder=0)
+    plt.imshow(cv2.resize(mask, (config.IMG_SIZE[1], config.IMG_SIZE[0])),zorder=1, alpha = .3)
+    plt.axis("off")
+    plt.savefig(os.path.join(folder, 'results', img_name + '.png'), bbox_inches="tight", pad_inches=0)
+
 sigmoid = lambda x: 1 / (1 + np.exp(-x))
 
 def get_augmentation(stage):
