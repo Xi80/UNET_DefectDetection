@@ -59,7 +59,7 @@ def save_test(image, mask, img_name, folder):
     ax[0].imshow(cv2.resize(image, (config.IMG_SIZE[1], config.IMG_SIZE[0])))
     ax[1].imshow(cv2.resize(mask, (config.IMG_SIZE[1], config.IMG_SIZE[0])))
     ax[0].title.set_text('MO Image')
-    ax[0].title.set_text('Defects(Inference)')
+    ax[1].title.set_text('Defects(Inference)')
     f.savefig(os.path.join(folder, 'results', img_name + '.png'), bbox_inches="tight", pad_inches=0)
     
 sigmoid = lambda x: 1 / (1 + np.exp(-x))
