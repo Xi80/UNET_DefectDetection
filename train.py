@@ -62,7 +62,7 @@ img_size = config.IMG_SIZE
 batch_size = args.batch_size
 path = args.dir 
 
-train = pd.read_csv(os.path.join(args.dir,'train_balanced.csv'))
+train = pd.read_csv(os.path.join(args.dir,'train.csv'))
 train = train.drop_duplicates(subset=['ImageId']).reset_index(drop=True)
 id_mask_count = train.loc[train['EncodedPixels'].isnull() == False, 'ImageId'].value_counts().\
 reset_index().rename(columns={'index': 'img_id', 'ImageId': 'count'})
